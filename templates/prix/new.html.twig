@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ajouter un prix{% endblock %}
+
+{% block body %}
+    <h1>Ajouter un prix</h1>
+    {{ form(formulaire) }}
+
+    <a href="{{ path('addPersonne') }}" class="btn btn-success">Nouvel Personne</a>
+{% endblock %}

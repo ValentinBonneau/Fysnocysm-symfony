@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PersonneController!{% endblock %}
+
+{% block body %}
+    {% if personnes|length != 0 %}
+    <ul>
+        {% for p in personnes  %}
+            <li>- {{ p.nom }} {{ p.prenom }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        pas de personne, pour l'instant ...
+    {% endif %}
+    <br>
+    <a href="{{ path('') }}" class="btn btn-success">Ajouter une personne</a>
+{% endblock %}

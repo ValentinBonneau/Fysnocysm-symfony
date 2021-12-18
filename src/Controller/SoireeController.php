@@ -37,9 +37,9 @@ class SoireeController extends AbstractController
     }
 
     #[Route('/new', name: 'soireeAdd')]
-    public function post(Request $request){
+    public function post(Request $request)
+    {
         $soiree = new Soiree();
-
         $form = $this->createForm(SoireeType::class, $soiree);
 
         $form->handleRequest($request);

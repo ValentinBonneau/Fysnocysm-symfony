@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Personne;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,6 +15,19 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PersonneRepository extends ServiceEntityRepository
 {
+    /**
+     * @param int $idSoiree
+     * @return Personne[]
+     */
+    public function findByIdSoiree(int $idSoiree) : array
+    {
+        $qb = $this->createQueryBuilder('pe')
+            ->join("pe.prix",'pr',Join::ON)
+            ->where('pr.idSoiree = :id')
+            ->setParameter('id',$idSoiree);
+
+        return $qb->getQuery()->execute();
+    }
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Personne::class);

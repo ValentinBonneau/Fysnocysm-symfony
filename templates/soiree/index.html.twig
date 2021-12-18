@@ -1,11 +1,61 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SoireeController!{% endblock %}
+{% block title %}Fysnocysm{% endblock %}
 
 {% block body %}
 
     <h1>Bienvenue sur Fysnocysm</h1>
+    <a href="{{ path('soireeAdd') }}" class="btn btn-success m-4">+ Nouvelle soirée</a>
+    <br>
+    <div class="accordion my-2" id="accordionExample">
+        {% for s in soirees %}
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading{{ s.id }}">
+                    <button class="accordion-button bg-success text-light" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse{{ s.id }}" aria-expanded="true"
+                            aria-controls="collapse{{ s.id }}">
+                        {{ s.lieu }} - {{ s.date|date('Y-m-d') }}
+                    </button>
+                </h2>
+                <div id="collapse{{ s.id }}" class="accordion-collapse collapse
+{% if s == soirees|first %}
+show
+{% endif %}
+" aria-labelledby="heading{{ s.id }}" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Prénom</th>
+                                <th scope="col">Argent avancé</th>
+                                <th scope="col">Argent due au pot commun</th>
+                            </tr>
+                            </thead>
+                            {% set prixTotal = 0  %}
 
-
-
+                            {%
+                             for prix in s.prix
+                             %}
+                                {% set prixTotal = prixTotal + prix.montant%}
+                            {%
+                             endfor
+                             %}
+                            <tbody>
+                            {% for prix in s.prix %}
+                                <tr>
+                                    <td>{{ prix.idPersonne.nom }}</td>
+                                    <td>{{ prix.idPersonne.prenom }}</td>
+                                    <td>{{ prix.montant }}</td>
+                                    <td>{{ (prixTotal - prix.montant)/(s.prix|length - 1) - prix.montant }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <a href="{{ path('prix',{'idSoiree': s.id}) }}" class="btn btn-success">Ajouter une personne</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
